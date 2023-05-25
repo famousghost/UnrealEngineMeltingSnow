@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/BoxComponent.h"
 
 #include "SpawnObjects.generated.h"
+
+class UBoxComponent;
 
 UCLASS()
 class SNOWEFFECTS_API ASpawnObjects : public AActor

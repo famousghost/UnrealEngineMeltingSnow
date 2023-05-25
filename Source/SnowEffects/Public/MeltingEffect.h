@@ -4,8 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include <Components/SceneCaptureComponent2D.h>
+
 #include "MeltingEffect.generated.h"
+
+class USceneCaptureComponent2D;
+class UMaterialParameterCollection;
+class FName;
+class UMaterialParameterCollectionInstance;
+class UTextureRenderTarget2D;
+class UMaterial;
 
 UCLASS()
 class SNOWEFFECTS_API AMeltingEffect : public AActor
@@ -30,10 +37,48 @@ public:
     UPROPERTY(EditDefaultsOnly)
         USceneCaptureComponent2D* m_deformingSceneCapture2D;
 
-private:
     UPROPERTY(EditAnywhere)
+        UMaterialParameterCollection* m_collectionParam;
+
+public:
+    UFUNCTION()
+        void SetMPCScalarParam(UMaterialParameterCollectionInstance* p_mpci, const FName& p_name, int p_value, bool p_debug = false);
+    UFUNCTION()
+        void SetMPCVectorParam(UMaterialParameterCollectionInstance* p_mpci, const FName& p_name, const FVector& p_value, bool p_debug = false);
+
+    UFUNCTION()
+        void ClearTexture(UTextureRenderTarget2D* p_texture);
+
+    UFUNCTION()
+        void DrawMaterialToRenderTarget(UTextureRenderTarget2D* p_texture, UMaterial* p_material);
+
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
         float m_fieldSize;
+private:
+
 
     UPROPERTY(EditAnywhere)
-        float m_maxSnowSize;
+        float m_maxSnowHeight;
+
+    UPROPERTY(EditAnywhere)
+        AActor* m_landscape;
+
+    UPROPERTY(EditAnywhere)
+        UTextureRenderTarget2D* m_displacementTexture;
+
+    UPROPERTY(EditAnywhere)
+        UTextureRenderTarget2D* m_displacementTextureGenerated;
+
+    UPROPERTY(EditAnywhere)
+        UTextureRenderTarget2D* m_meltingTexture;
+
+    UPROPERTY(EditAnywhere)
+        UTextureRenderTarget2D* m_meltingTextureBlur;
+
+    UPROPERTY(EditAnywhere)
+        UMaterial* m_displacementMaterial;
+
+    UPROPERTY(EditAnywhere)
+        UMaterial* m_meltingMaterial;
 };
