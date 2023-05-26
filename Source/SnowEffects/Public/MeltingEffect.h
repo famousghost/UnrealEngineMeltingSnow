@@ -1,10 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-
 #include "MeltingEffect.generated.h"
 
 class USceneCaptureComponent2D;
@@ -13,6 +11,8 @@ class FName;
 class UMaterialParameterCollectionInstance;
 class UTextureRenderTarget2D;
 class UMaterial;
+class UMaterialInstanceDynamic;
+class UMaterialInstance;
 
 UCLASS()
 class SNOWEFFECTS_API AMeltingEffect : public AActor
@@ -50,35 +50,68 @@ public:
         void ClearTexture(UTextureRenderTarget2D* p_texture);
 
     UFUNCTION()
-        void DrawMaterialToRenderTarget(UTextureRenderTarget2D* p_texture, UMaterial* p_material);
+        void DrawMaterialToRenderTarget(UTextureRenderTarget2D* p_texture, UMaterialInstanceDynamic* p_material);
+
+    UFUNCTION()
+        void CreateMaterialInstances();
+
+    UFUNCTION()
+        void SetMaterialTextureIfMaterialExists(UMaterialInstanceDynamic* p_material, const FName& p_name, UTextureRenderTarget2D* p_texture);
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly)
         float m_fieldSize;
-private:
 
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        AActor* m_landscape;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+        UTextureRenderTarget2D* m_displacementTexture;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+        UTextureRenderTarget2D* m_displacementTextureGenerated;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+        UTextureRenderTarget2D* m_meltingTexture;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly)
+        UTextureRenderTarget2D* m_meltingTextureBlur;
+
+    UPROPERTY()
+        UMaterialInstanceDynamic* m_meltingMaterialDynamicInstance;
+
+    UPROPERTY()
+        UMaterialInstanceDynamic* m_displacementMaterialDynamicInstance;
+
+    UPROPERTY()
+        UMaterialInstanceDynamic* m_meltingBlurMaterialDynamicInstance;
+
+    UPROPERTY()
+        UMaterialInstanceDynamic* m_displacementGeneratedMaterialDynamicInstance;
+
+    UPROPERTY()
+        UMaterialInstanceDynamic* m_landscapeMaterialDynamicInstance;
+private:
 
     UPROPERTY(EditAnywhere)
         float m_maxSnowHeight;
 
-    UPROPERTY(EditAnywhere)
-        AActor* m_landscape;
+
 
     UPROPERTY(EditAnywhere)
-        UTextureRenderTarget2D* m_displacementTexture;
+        UMaterialInstance* m_displacementGeneratedMaterial;
 
     UPROPERTY(EditAnywhere)
-        UTextureRenderTarget2D* m_displacementTextureGenerated;
+        UMaterialInstance* m_meltingBlurMaterial;
 
     UPROPERTY(EditAnywhere)
-        UTextureRenderTarget2D* m_meltingTexture;
+        UMaterialInstance* m_displacementMaterial;
 
     UPROPERTY(EditAnywhere)
-        UTextureRenderTarget2D* m_meltingTextureBlur;
+        UMaterialInstance* m_meltingMaterial;
 
     UPROPERTY(EditAnywhere)
-        UMaterial* m_displacementMaterial;
+        UMaterialInstance* m_landscapeMaterial;
 
-    UPROPERTY(EditAnywhere)
-        UMaterial* m_meltingMaterial;
 };
